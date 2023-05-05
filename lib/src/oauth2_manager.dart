@@ -3,9 +3,8 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart' as oauth2;
-
-import 'oauth_model.dart';
-import 'typedef.dart';
+import 'package:oauth2_manager/oauth_manager.dart';
+import 'package:oauth2_manager/src/typedef.dart';
 
 /// An abstract class for managing OAuth2 authentication.
 abstract class BaseOAuth2Manager {
@@ -38,16 +37,23 @@ abstract class BaseOAuth2Manager {
 /// This class extends the BaseOAuth2Manager class and implements the OAuth2 Authorization Code Grant flow.
 /// It uses a HttpServer to receive the authorization code and a redirect function to open the authorization page in the user's browser.
 class OAuth2Manager extends BaseOAuth2Manager {
-  final OAuth2Model _configuration;
+  /// The OAuth2 configuration.
+  final OAuth2Configuration _configuration;
+
+  /// The function used to open the authorization page in the user's browser.
   final RedirectUri _redirect;
+
+  /// The page to display to the user after the redirect URI is received.
   final String _redirectPage;
+
+  /// The content type of the redirectPage.
   final String? _contentType;
 
   OAuth2Manager({
-    required OAuth2Model configuration,
+    required OAuth2Configuration configuration,
     required RedirectUri redirect,
     required String redirectPage,
-    String? contentType = 'text/html',
+    String? contentType,
   })  : _contentType = contentType,
         _redirectPage = redirectPage,
         _redirect = redirect,
@@ -86,7 +92,7 @@ class OAuth2Manager extends BaseOAuth2Manager {
         secret: _configuration.clientSecret,
       );
 
-      final authorizationUrl = grant.getAuthorizationUrl(
+      var authorizationUrl = grant.getAuthorizationUrl(
         redirectUrl,
         scopes: _configuration.scopes,
       );
@@ -110,32 +116,23 @@ class OAuth2Manager extends BaseOAuth2Manager {
     }
   }
 
-  Future<void> getRefreshToken(
-    List<String> newScopes,
-  ) async {
-    await _redirectServer?.close();
-    _redirectServer = await HttpServer.bind('localhost', 0);
-    final redirectURL = 'http://localhost:${_redirectServer!.port}/auth';
-
-    var grant = oauth2.AuthorizationCodeGrant(
-      _configuration.clientID,
-      Uri.parse(_configuration.authorizationEndpoint),
-      Uri.parse(_configuration.tokenEndpoint),
-      httpClient: JsonAcceptingHttpClient(),
+  Future<Credentials> getRefreshToken(
+    String accessToken,
+    String refreshToken,
+    String idToken, {
+    List<String>? newScopes,
+  }) async {
+    final credentials = Credentials(
+      accessToken,
+      refreshToken: refreshToken,
+      idToken: idToken,
+      expiration: DateTime(3600),
+      tokenEndpoint: Uri.parse(_configuration.tokenEndpoint),
+    );
+    return await credentials.refresh(
+      newScopes: newScopes,
+      identifier: _configuration.clientID,
       secret: _configuration.clientSecret,
-    );
-
-    var authorizationUrl = grant.getAuthorizationUrl(
-      Uri.parse(redirectURL),
-      scopes: _configuration.scopes,
-    );
-
-    // ADD THIS:
-    authorizationUrl = authorizationUrl.replace(
-      queryParameters: {
-        ...authorizationUrl.queryParameters,
-        "access_type": "offline",
-      },
     );
   }
 }

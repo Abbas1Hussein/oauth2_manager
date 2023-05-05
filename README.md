@@ -2,10 +2,6 @@
 
 An easy-to-use OAuth2 manager for Dart applications.
 
-## Installation
-
-To use this package, add `oauth2_manager` as a [dependency in your `pubspec.yaml` file](https://flutter.dev/docs/development/packages-and-plugins/using-packages).
-
 ## Usage
 
 ### Authorization Code Grant
@@ -35,8 +31,8 @@ final credentials = await oauth.login(
     // Open the authorization URL in the user's browser
     // Example: await launch('$uri');
   },
-  redirectPage: '<HTML page to display after authorization>',
-  contentType: '<content type of the response>',
+  redirectPage: '<the page to display after authorization>',
+  contentType:  '<content type of redirectPage>',
 );
 ```
 
@@ -45,16 +41,8 @@ final credentials = await oauth.login(
 To use the Refresh Token Grant flow, call the `getRefreshToken` method and pass in the access token and scopes:
 
 ```dart
-final newCredentials = await oauth.getRefreshToken(
-  '<access token>',
-  ['<scope>'],
-);
+final newCredentials = await oauth.getRefreshToken('<accessToken>','<refreshToken>','<idToken>',['<new scope>']);
 ```
+## Installation
 
-### Logging Out
-
-To logout, call the `logout` method:
-
-```dart
-oauth.logout();
-```
+To use this package, add `oauth2_manager` as a [dependency in your `pubspec.yaml` file](https://flutter.dev/docs/development/packages-and-plugins/using-packages).

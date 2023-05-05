@@ -1,1 +1,1 @@
-typedef RedirectUri = Future<void> Function(Uri);
+typedef RedirectUri = Future<void> Function(Uri uri);

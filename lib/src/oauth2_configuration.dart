@@ -1,7 +1,7 @@
 /// This class represents the configuration for an OAuth2 server.
 /// It contains the client ID, authorization endpoint, token endpoint, secret, and scopes required for authentication.
 /// And contains the methods fromJson,toJson for fetching and sending data.
-class OAuth2Model {
+class OAuth2Configuration {
   /// The client ID for the OAuth2 server. This is a unique identifier for the client that is provided by the server.
   final String clientID;
 
@@ -17,16 +17,19 @@ class OAuth2Model {
   /// The scopes that the client is requesting. Scopes define the level of access that the client is requesting to the user's resources.
   final List<String> scopes;
 
-  OAuth2Model({
+  OAuth2Configuration({
     required this.clientID,
     required this.authorizationEndpoint,
     required this.tokenEndpoint,
     this.clientSecret,
     required this.scopes,
-  });
+  })  : assert(clientID.isNotEmpty, 'clientID can\'t be null'),
+        assert(authorizationEndpoint.isNotEmpty, 'authorizationEndpoint can\'t be null'),
+        assert(tokenEndpoint.isNotEmpty, 'tokenEndpoint can\'t be null'),
+        assert(scopes.isNotEmpty, 'scopes can\'t be null');
 
-  factory OAuth2Model.fromJson(Map<String, dynamic> json) {
-    return OAuth2Model(
+  factory OAuth2Configuration.fromJson(Map<String, dynamic> json) {
+    return OAuth2Configuration(
       clientID: json['client_id'],
       authorizationEndpoint: json['authorizationEndpoint'],
       tokenEndpoint: json['tokenEndpoint'],
