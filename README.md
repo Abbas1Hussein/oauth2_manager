@@ -11,22 +11,23 @@ To use the Authorization Code Grant flow, first create an instance of the `OAuth
 ```dart
 import 'package:oauth2_manager/oauth2_manager.dart';
 
-// can used to handles all oauth2;
-final oauth = OAuth2();
-
-```
-
-Then call the `login` method and pass in the `OAuth2Model` configuration, redirect URI, and redirect page:
-
-```dart
-final credentials = await oauth.login(
-  configuration: OAuth2Model(
+final oauth2Manager = OAuth2Manager(
+  configuration: OAuth2Configuration(
     clientID: '<client ID>',
     clientSecret: '<client secret>',
     authorizationEndpoint: '<authorization endpoint>',
     tokenEndpoint: '<token endpoint>',
     scopes: ['<scope>'],
   ),
+);
+
+final oauth2 = OAuth2(oauth2Manager);
+```
+
+Then call the `login` method and pass in the `OAuth2Model` configuration, redirect URI, and redirect page:
+
+```dart
+final credentials = await oauth.login(
   redirectUri: (Uri uri) async {
     // Open the authorization URL in the user's browser
     // Example: await launch('$uri');

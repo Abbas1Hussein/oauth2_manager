@@ -40,29 +40,21 @@ class OAuth2Manager extends BaseOAuth2Manager {
   /// The OAuth2 configuration.
   final OAuth2Configuration _configuration;
 
-  /// The function used to open the authorization page in the user's browser.
-  final RedirectUri _redirect;
-
-  /// The page to display to the user after the redirect URI is received.
-  final String _redirectPage;
-
-  /// The content type of the redirectPage.
-  final String? _contentType;
-
   OAuth2Manager({
     required OAuth2Configuration configuration,
-    required RedirectUri redirect,
-    required String redirectPage,
-    String? contentType,
-  })  : _contentType = contentType,
-        _redirectPage = redirectPage,
-        _redirect = redirect,
-        _configuration = configuration;
+  }) : _configuration = configuration;
 
   /// This method initiates the OAuth2 flow by creating a HttpServer to receive the authorization code,
   /// opening the authorization page in the user's browser, and handling the authorization response to obtain an OAuth2 token.
-
-  Future<oauth2.Credentials> login() async {
+  ///
+  /// [redirect] The function used to open the authorization page in the user's browser.
+  /// [redirectPage] The page to display to the user after the redirect URI is received.
+  /// [contentType] The content type of the redirectPage.
+  Future<oauth2.Credentials> login({
+    required RedirectUri redirect,
+    required String redirectPage,
+    String? contentType,
+  }) async {
     await _redirectServer?.close();
     try {
       _redirectServer = await HttpServer.bind('localhost', 0);
@@ -70,6 +62,9 @@ class OAuth2Manager extends BaseOAuth2Manager {
 
       final authenticatedHttpClient = await _getOAuth2Client(
         redirectUrl: Uri.parse(redirectURL),
+        redirect: redirect,
+        redirectPage: redirectPage,
+        contentType: contentType,
       );
       return authenticatedHttpClient.credentials;
     } catch (_) {
@@ -82,6 +77,9 @@ class OAuth2Manager extends BaseOAuth2Manager {
   /// It then listens for the incoming request on the HttpServer to obtain the authorization code, and uses it to obtain an OAuth2 token.
   Future<oauth2.Client> _getOAuth2Client({
     required Uri redirectUrl,
+    required RedirectUri redirect,
+    required String redirectPage,
+    String? contentType,
   }) async {
     try {
       var grant = oauth2.AuthorizationCodeGrant(
@@ -97,11 +95,11 @@ class OAuth2Manager extends BaseOAuth2Manager {
         scopes: _configuration.scopes,
       );
 
-      await _redirect(authorizationUrl);
+      await redirect(authorizationUrl);
 
       final responseQueryParameters = await _listen(
-        redirectPage: _redirectPage,
-        contentType: _contentType,
+        redirectPage: redirectPage,
+        contentType: contentType,
       );
 
       final client = await grant.handleAuthorizationResponse(
