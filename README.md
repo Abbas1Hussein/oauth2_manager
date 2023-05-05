@@ -6,7 +6,7 @@ An easy-to-use OAuth2 manager for Dart applications.
 
 ### Authorization Code Grant
 
-To use the Authorization Code Grant flow, first create an instance of the `OAuth2` class:
+To use the Authorization Code Grant flow, first create an instance of the `OAuth2`class and pass in the configuration OAuth2Configuration:
 
 ```dart
 import 'package:oauth2_manager/oauth2_manager.dart';
@@ -24,7 +24,7 @@ final oauth2Manager = OAuth2Manager(
 final oauth2 = OAuth2(oauth2Manager);
 ```
 
-Then call the `login` method and pass in the `OAuth2Model` configuration, redirect URI, and redirect page:
+Then call the `login` method and pass in the redirect URI, and redirect page:
 
 ```dart
 final credentials = await oauth.login(
@@ -39,7 +39,7 @@ final credentials = await oauth.login(
 
 ### Refresh Token Grant
 
-To use the Refresh Token Grant flow, call the `getRefreshToken` method and pass in the access token and scopes:
+To use the Refresh Token Grant flow, call the `getRefreshToken` method and pass parameters:
 
 ```dart
 final newCredentials = await oauth.getRefreshToken('<accessToken>','<refreshToken>','<idToken>',['<new scope>']);
