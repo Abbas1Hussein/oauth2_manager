@@ -1,32 +1,38 @@
 import 'package:oauth2_manager/oauth_manager.dart';
-import 'package:oauth2_manager/src/oauth2_manager.dart';
 import 'package:oauth2_manager/src/typedef.dart';
 
 class OAuth2 {
-  final OAuth2Manager _oauth;
+  static OAuth2Manager? _oauth;
 
-  OAuth2(this._oauth);
+  OAuth2._();
 
-  Future<Credentials> getRefreshToken(
-    String accessToken,
-    String refreshToken,
-    String idToken, {
+  static Future<Credentials> getRefreshToken(
+    String refreshToken, {
+    required String clientID,
+    required String clientSecret,
+    required String tokenEndpoint,
     List<String>? newScopes,
   }) async {
-    return await _oauth.getRefreshToken(
-      accessToken,
-      refreshToken,
-      idToken,
-      newScopes: newScopes,
+    _oauth = OAuth2Manager(
+      configuration: OAuth2Configuration(
+        clientID: clientID,
+        clientSecret: clientSecret,
+        tokenEndpoint: tokenEndpoint,
+        authorizationEndpoint: '',
+        scopes: [],
+      ),
     );
+    return await _oauth!.getRefreshToken(refreshToken, newScopes: newScopes);
   }
 
-  Future<Credentials> login({
+  static Future<Credentials> login(
+    OAuth2Configuration oauth2Configuration, {
     required RedirectUri redirect,
     required String redirectPage,
     String? contentType,
   }) async {
-    return await _oauth.login(
+    _oauth = OAuth2Manager(configuration: oauth2Configuration);
+    return await _oauth!.login(
       redirect: redirect,
       redirectPage: redirectPage,
       contentType: contentType,

@@ -115,15 +115,13 @@ class OAuth2Manager extends BaseOAuth2Manager {
   }
 
   Future<Credentials> getRefreshToken(
-    String accessToken,
-    String refreshToken,
-    String idToken, {
+    String refreshToken, {
     List<String>? newScopes,
   }) async {
     final credentials = Credentials(
-      accessToken,
+      '',
+      idToken: '',
       refreshToken: refreshToken,
-      idToken: idToken,
       expiration: DateTime(3600),
       tokenEndpoint: Uri.parse(_configuration.tokenEndpoint),
     );

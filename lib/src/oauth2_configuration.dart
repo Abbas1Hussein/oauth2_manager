@@ -23,10 +23,7 @@ class OAuth2Configuration {
     required this.tokenEndpoint,
     this.clientSecret,
     required this.scopes,
-  })  : assert(clientID.isNotEmpty, 'clientID can\'t be null'),
-        assert(authorizationEndpoint.isNotEmpty, 'authorizationEndpoint can\'t be null'),
-        assert(tokenEndpoint.isNotEmpty, 'tokenEndpoint can\'t be null'),
-        assert(scopes.isNotEmpty, 'scopes can\'t be null');
+  });
 
   factory OAuth2Configuration.fromJson(Map<String, dynamic> json) {
     return OAuth2Configuration(
