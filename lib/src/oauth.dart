@@ -1,6 +1,8 @@
 import 'package:oauth2_manager/oauth_manager.dart';
 import 'package:oauth2_manager/src/typedef.dart';
 
+import 'oauth2_manager.dart';
+
 class OAuth2 {
   static OAuth2Manager? _oauth;
 
