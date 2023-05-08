@@ -2,13 +2,13 @@
 
 OAuth2 is a widely used protocol for authentication and authorization. There are many providers that support OAuth2 authentication. Here is a list of some popular providers that support OAuth2 authentication:
 
-Google
-Facebook
-Twitter
-Github
-LinkedIn
-Microsoft
-Amazon
+- `Google`
+- `Facebook`
+- `Twitter`
+- `Github`
+- `LinkedIn`
+- `Microsoft`
+- `Amazon`
 
 Each of these providers has their own specific OAuth2 implementation, but the general flow of the protocol is the same. You will need to provide the appropriate configuration information for each provider, such as the clientID, clientSecret, authorizationEndpoint, tokenEndpoint, and scopes.
 
