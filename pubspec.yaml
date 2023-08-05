@@ -4,11 +4,12 @@ version: 1.0.0
 repository: https://github.com/Abbas1Hussein/oauth2_manager
 
 environment:
-  sdk: '>=2.19.0 <3.0.0'
+  sdk: '>=2.19.0 <4.0.0'
 
 dependencies:
-  oauth2: ^2.0.1
+  oauth2: ^2.0.2
+  http: ^1.1.0
 
 dev_dependencies:
-  lints: ^2.0.1
-  test: ^1.24.2
+  lints: ^2.1.1
+  test: ^1.24.5

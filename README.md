@@ -21,7 +21,7 @@ To use the oauth2_manager package with a specific provider, you will need to con
 To use the Authorization Code Grant flow, first create an instance of the `OAuth2Configuration` class and pass in the parameters:
 
 ```dart
-import 'package:oauth2_manager/oauth_manager.dart';
+import 'package:oauth2_manager/oauth2_manager.dart';
 
 final oauth2Configuration = OAuth2Configuration(
   clientID: '<client ID>',
@@ -42,7 +42,7 @@ final credentials = await OAuth2.login(
     // Open the authorization URL in the user's browser
     // Example: await launch('$uri');
   },
-  redirectPage: '<the page to display after authorization>',
+  redirectPage: '<the page.html to display after authorization>',
   contentType: '<content type of redirectPage>',
 );
 ```

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:oauth2/oauth2.dart' as oauth2;
-import 'package:oauth2_manager/oauth_manager.dart';
+import 'package:oauth2_manager/oauth2_manager.dart';
 import 'package:oauth2_manager/src/typedef.dart';
 
 /// An abstract class for managing OAuth2 authentication.
@@ -12,7 +12,7 @@ abstract class BaseOAuth2Manager {
 
   /// Starts a local server and listens for the redirect URI.
   ///
-  /// The `redirectPage` argument is the HTML page to display to the user after the redirect URI is received.
+  /// The `redirectPage` argument is the HTML page.html to display to the user after the redirect URI is received.
   /// The `contentType` argument is the content type of the response.
   ///
   /// Returns a `Map<String, String>` of the query parameters in the redirect URI.
@@ -35,7 +35,7 @@ abstract class BaseOAuth2Manager {
 }
 
 /// This class extends the BaseOAuth2Manager class and implements the OAuth2 Authorization Code Grant flow.
-/// It uses a HttpServer to receive the authorization code and a redirect function to open the authorization page in the user's browser.
+/// It uses a HttpServer to receive the authorization code and a redirect function to open the authorization page.html in the user's browser.
 class OAuth2Manager extends BaseOAuth2Manager {
   /// The OAuth2 configuration.
   final OAuth2Configuration _configuration;
@@ -45,10 +45,10 @@ class OAuth2Manager extends BaseOAuth2Manager {
   }) : _configuration = configuration;
 
   /// This method initiates the OAuth2 flow by creating a HttpServer to receive the authorization code,
-  /// opening the authorization page in the user's browser, and handling the authorization response to obtain an OAuth2 token.
+  /// opening the authorization page.html in the user's browser, and handling the authorization response to obtain an OAuth2 token.
   ///
-  /// [redirect] The function used to open the authorization page in the user's browser.
-  /// [redirectPage] The page to display to the user after the redirect URI is received.
+  /// [redirect] The function used to open the authorization page.html in the user's browser.
+  /// [redirectPage] The page.html to display to the user after the redirect URI is received.
   /// [contentType] The content type of the redirectPage.
   Future<oauth2.Credentials> login({
     required RedirectUri redirect,

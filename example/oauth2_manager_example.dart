@@ -1,4 +1,4 @@
-import 'package:oauth2_manager/oauth_manager.dart';
+import 'package:oauth2_manager/oauth2_manager.dart';
 
 main() async {
   /// Google
@@ -64,4 +64,32 @@ main() async {
     tokenEndpoint: 'https://api.amazon.com/auth/o2/token',
     scopes: ['<scope>'],
   );
+
+
+  String authorizationSuccessHtml = '''
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Authorization Success</title>
+</head>
+<body>
+  <h1>Authorization Successful</h1>
+  <p>You have successfully authorized the application.</p>
+  <!-- You can add more content or elements here as needed -->
+</body>
+</html>
+''';
+
+  await OAuth2.login(
+    googleConfiguration,
+    redirect: (uri) async {
+      print(uri.toString());
+      // Open the authorization URL in the user's browser
+      // Example: await launch('$uri');
+    },
+    redirectPage: authorizationSuccessHtml,
+    contentType: 'text/html',
+  );
+
+
 }
